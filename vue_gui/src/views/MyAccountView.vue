@@ -158,7 +158,7 @@ export default {
       document.querySelector(".delete_screen").id = "hideModal";
     },
     update() {
-      this.$store.dispatch('updateUser', this.loggedUser?.user_id, this.updatingUser); 
+      this.$store.dispatch('updateUser', this.loggedUser.user_id, this.updatingUser); 
       this.hideEdit();
     },
     deleteUser() {
