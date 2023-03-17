@@ -24,11 +24,7 @@
             <p>{{ perfume.description }}</p>
           </div>
           <div class="buttons">
-            <button
-              @click="
-                fetchPerfume(perfume.perfume_id);
-              "
-            >
+            <button @click="fetchPerfume(perfume.perfume_id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
             <button @click="delPerf(perfume.perfume_id)">
@@ -37,11 +33,11 @@
           </div>
         </div>
       </div>
-      <button class="add_perf">Add new perfume</button>
+      <button class="add_perf" @click="showAdd()">Add new perfume</button>
     </div>
     <div class="edit_screen" v-if="perfume !== null">
       <div class="edit_modal" v-for="perfume in perfume" :key="perfume">
-        <form @submit.prevent="update()">
+        <form @submit.prevent="updatePerf(perfume.perfume_id, perfume)">
           <div class="form-floating">
             <input
               type="text"
@@ -99,7 +95,72 @@
           </div>
           <div class="form-buttons">
             <button @click="fetchPerfume()">Cancel</button>
-            <button type="submit" @click="updatePerf()">Update</button>
+            <button type="submit">Update</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="add_screen">
+      <div class="add_modal">
+        <form @submit.prevent="addPerf(this.newPerfume); hideAdd()">
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingText"
+              placeholder="name@example.com"
+              required
+              v-model="this.newPerfume.perfume_name"
+            />
+            <label for="floatingNumber">First name</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="number"
+              class="form-control"
+              id="floatingNumber"
+              placeholder="name@example.com"
+              required
+              v-model="this.newPerfume.price"
+            />
+            <label for="floatingText">Price</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingText"
+              placeholder="name@example.com"
+              required
+              v-model="this.newPerfume.gender"
+            />
+            <label for="floatingText">Gender</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingText"
+              placeholder="name@example.com"
+              required
+              v-model="this.newPerfume.description"
+            />
+            <label for="floatingText">Description</label>
+          </div>
+          <div class="form-floating">
+            <input
+              type="text"
+              class="form-control"
+              id="floatingText"
+              placeholder="name@example.com"
+              required
+              v-model="this.newPerfume.image_url"
+            />
+            <label for="floatingText">Image link</label>
+          </div>
+          <div class="form-buttons">
+            <button @click="hideAdd()">Cancel</button>
+            <button type="submit">Update</button>
           </div>
         </form>
       </div>
@@ -121,7 +182,31 @@ export default {
       console.log(this.updatingUser);
     },
     delPerf(id) {
-        this.$store.dispatch('deletePerfume', id);
+      this.$store.dispatch("deletePerfume", id);
+      this.fetchPerfume();
+    },
+    updatePerf(id, payload) {
+      this.$store.dispatch("updatePerfume", id, payload);
+    },
+    addPerf(payload) {
+        this.$store.dispatch("addPerfume", payload);
+    },
+    showAdd() {
+      document.querySelector(".add_screen").id = "showModal";
+    },
+    hideAdd() {
+      document.querySelector(".add_screen").id = "hideModal";
+    }
+  },
+  data() {
+    return {
+        newPerfume: {
+            perfume_name: null,
+            price: 1,
+            gender: null,
+            description: null,
+            image_url: null 
+        }
     }
   },
 
@@ -252,8 +337,15 @@ export default {
   display: flex;
   gap: 1rem;
 }
+#showModal {
+    display: grid;
+  }
+  #hideModal {
+    display: none;
+  }
 
-.edit_screen {
+
+.edit_screen, .add_screen {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -261,7 +353,10 @@ export default {
   place-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 }
-.edit_modal {
+.add_screen {
+    display: none;
+}
+.edit_modal, .add_modal {
   margin: 0 4rem 0 4rem;
   width: 28rem;
   height: 30rem;

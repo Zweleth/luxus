@@ -77,6 +77,18 @@ export default createStore({
       }
     },
 
+    async addPerfume(context, payload) {
+      let res = await axios.post(`${URL}perfumes`, payload);
+      let {result, msg, err} = await res.data;
+      if(result){
+        context.dispatch('fetchPerfumes');
+        context.commit('setPerfume', result);
+        context.commit('setMessage', msg);
+      }else {
+        context.commit('setMessage', err);
+      }
+    },
+
     // async login(context, info){
     //   try {
     //     let res = await fetch(`${URL}login`, {
@@ -135,6 +147,13 @@ export default createStore({
     // edit/update client
     async updateUser(context, id, payload){
       let res = await axios.put(`${URL}user/${id}`, payload);
+      let {msg, err} = await res.data;
+      msg ? context.commit('setMessage', msg) : context.commit('setMessage', err);
+      context.dispatch('fetchPerfumes');
+    },
+
+    async updatePerfume(context, id, payload){
+      let res = await axios.put(`${URL}perfume/${id}`, payload);
       let {msg, err} = await res.data;
       msg ? context.commit('setMessage', msg) : context.commit('setMessage', err);
     },
