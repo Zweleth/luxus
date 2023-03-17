@@ -105,10 +105,25 @@ export default createStore({
 
     // delete client
     async deleteUser(context, id){
-      let res = await axios.delete(`${URL}user/${id}`, id);
+      let res = await axios.delete(`${URL}user/${id}`);
       let {msg, err} = await res.data;
       if(msg) {
         context.dispatch('fetchUsers');
+        context.commit('setMessage', msg);
+      } 
+      else {
+        context.commit('setMessage', err);
+      }
+        
+    },
+    
+
+    // delete client
+    async deletePerfume(context, id){
+      let res = await axios.delete(`${URL}perfume/${id}`);
+      let {msg, err} = await res.data;
+      if(msg) {
+        context.dispatch('fetchPerfumes');
         context.commit('setMessage', msg);
       } 
       else {
@@ -147,12 +162,12 @@ export default createStore({
       }
     },
 
-    async fetchUser(context, id) {
+    async fetchPerfume(context, id) {
       try { 
-        let res = await fetch(`${URL}user/${id}`);
+        let res = await fetch(`${URL}perfume/${id}`);
         let data = await res.json();
         console.log(data);
-        context.commit('setUser', data.results.length !== 0 ? data.results : null);
+        context.commit('setPerfume', data.results.length !== 0 ? data.results : null);
       }catch(e) {
         console.log(e);
       }
