@@ -2,16 +2,20 @@
   <navbar></navbar>
  
   <router-view/>
+
+  <myfooter></myfooter>
 </template>
 <script>
 // @ is an alias to /src
 import navbar from '@/components/Navbar.vue'
 import accountLink from '@/components/AccountLink.vue'
+import myfooter from '@/components/Footer.vue'
 
 export default {
   components: {
     navbar,
-    accountLink
+    accountLink,
+    myfooter
   }
 }
 </script>

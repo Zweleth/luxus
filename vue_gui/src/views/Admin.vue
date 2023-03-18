@@ -316,7 +316,7 @@ export default {
 }
 .images {
   margin-left: auto;
-  height: 80vh;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -324,7 +324,7 @@ export default {
 
 .perfs {
   margin-right: auto;
-  height: 80vh;
+  max-height: 80vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
