@@ -52,9 +52,8 @@
       </button>
     </div>
     <div class="search_bar">
-      <i class="fa-solid fa-arrow-up-z-a"></i
-      ><i class="fa-solid fa-arrow-up-z-a"></i
-      ><i class="fa-solid fa-filter"></i>
+      
+      <i class="fa-solid fa-filter"></i>
     </div>
     <div class="single_perfume" id="hideModal">
       <div class="perfume_info">

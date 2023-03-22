@@ -46,6 +46,9 @@ export default createStore({
     },
     setMessage(state, message) {
       state.message = message;
+    },
+    sortPerfumes(state, perfumes) {
+      state.perfumes = perfumes;
     }
 
   },
@@ -145,11 +148,11 @@ export default createStore({
     },
 
     // edit/update client
-    async updateUser(context, id, payload){
-      let res = await axios.put(`${URL}user/${id}`, payload);
+    async updateUser(context, payload){
+      let res = await axios.put(`${URL}user/${payload.user_id}`, payload);
       let {msg, err} = await res.data;
       msg ? context.commit('setMessage', msg) : context.commit('setMessage', err);
-      context.dispatch('fetchPerfumes');
+      context.dispatch('fetchUsers');
     },
 
     async updatePerfume(context, id, payload){
@@ -190,6 +193,16 @@ export default createStore({
       }catch(e) {
         console.log(e);
       }
+    },
+    sortPerfumes:(state) => {
+      state.perfumes.sort((a,b)=> {
+        return a.price - b.price;
+      })
+      if(!state.asc) {
+        state.perfumes.reverse()
+      }
+      state.asc = !state.asc;
+      context.dispatch('fetchPerfumes');
     }
 
     

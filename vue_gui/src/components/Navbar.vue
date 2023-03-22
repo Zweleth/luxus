@@ -23,8 +23,9 @@
           <router-link to="/login">Log in</router-link>
           <router-link to="/signup">Sign up</router-link>
           <router-link to="/myaccount" v-if="loggedUser">My account</router-link>
-          <router-link to="/admin">Admin</router-link>
+          <router-link to="/admin" v-if="loggedUser?.user_role === 'admin'">Admin</router-link>
           <router-link to="/about">About us</router-link>
+          <!-- v-if="loggedUser?.user_role === 'admin'" -->
         </div>
       </div>
     </div>

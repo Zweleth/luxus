@@ -1,18 +1,26 @@
 <template lang="">
   <div class="admin">
     <div class="left">
+      <button class="btn_data" @click="changeData">{{toggleData ? 'Users' : 'Perfumes'}}</button>
       <div class="images">
-        <div class="image" v-for="perfume in perfumes" :key="perfume">
+        <div class="image" v-if="this.toggleData === true" v-for="perfume in perfumes" :key="perfume">
           <div
             class="img"
             :style="{ backgroundImage: `url(${perfume.image_url})` }"
           ></div>
         </div>
+        <div class="image" v-if="this.toggleData === false" v-for="user in users" :key="user">
+          <div
+            class="img"
+            :style="{ backgroundImage: `url(${user.image_url})` }"
+          ></div>
+        </div>
       </div>
     </div>
     <div class="right">
+      <button class="btn_sort" @click="sort()"><i class="fa-solid fa-arrow-down-a-z"></i></button>
       <div class="perfs">
-        <div class="perf" v-for="perfume in perfumes" :key="perfume">
+        <div class="perf" v-if="this.toggleData === true" v-for="perfume in perfumes" :key="perfume">
           <div class="name_price">
             <h5>{{ perfume.perfume_name }}</h5>
             <h6>R {{ perfume.price }}</h6>
@@ -23,11 +31,31 @@
           <div class="description">
             <p>{{ perfume.description }}</p>
           </div>
-          <div class="buttons">
+          <div class="buttons perf_buttons">
             <button @click="fetchPerfume(perfume.perfume_id)">
               <i class="fa-solid fa-pen-to-square"></i>
             </button>
             <button @click="delPerf(perfume.perfume_id)">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="perf" v-if="this.toggleData === false" v-for="user in users" :key="users">
+          <div class="name_price users_names">
+            <h5>{{ user.first_name }}  {{user.last_name}}</h5>
+            <h6>{{ user.gender }}</h6>
+          </div>
+          <div class="gender">
+            <h5>{{ user.user_role === 'admin' ? 'Admin' : 'Client' }}</h5>
+          </div>
+          <div class="description user_desc">
+            <p><span style="font-size: medium;">{{ user.email }}</span> <br> {{user.phone_number}}</p>
+          </div>
+          <div class="buttons ">
+            <button class="btn_role" @click="edtRole(user.user_id, user.user_role)">
+              <p>{{ user.user_role === 'admin' ? 'Make client' : 'Make admin' }}</p>
+            </button>
+            <button class="btn_del" @click="delUser(user.user_id)">
               <i class="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -171,32 +199,58 @@
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["perfumes", "perfume"]),
+    ...mapGetters(["perfumes", "perfume", "users", "user", "loggedUser"]),
   },
   methods: {
-    ...mapActions(["fetchPerfumes", "fetchPerfume"]),
-    ...mapMutations(["setPerfumes"]),
+    ...mapActions(["fetchPerfumes", "fetchPerfume", "fetchUsers", "fetchUser"]),
+    ...mapMutations(["setPerfumes", "setUsers"]),
 
     showEdit() {
       document.querySelector(".edit_screen").id = "showModal";
       console.log(this.updatingUser);
     },
+    sort() {
+      this.$store.commit('sortPerfumes');
+      this.fetchPerfumes;
+    },
     delPerf(id) {
       this.$store.dispatch("deletePerfume", id);
-      this.fetchPerfume();
+      this.fetchPerfumes();
+    },
+    delUser(id) {
+      this.$store.dispatch("deleteUser", id);
+      this.$store.state.loggedUser= null;
+      this.fetchUsers();
     },
     updatePerf(id, payload) {
       this.$store.dispatch("updatePerfume", id, payload);
     },
     addPerf(payload) {
         this.$store.dispatch("addPerfume", payload);
+        this.fetchPerfumes();
     },
     showAdd() {
       document.querySelector(".add_screen").id = "showModal";
     },
     hideAdd() {
       document.querySelector(".add_screen").id = "hideModal";
+    },
+    changeData() {
+      this.toggleData= !this.toggleData;
+    },
+    edtRole(id, role) {
+      let newRole = null
+      if (role === 'admin') {
+        newRole = 'client'
+      }
+      else {
+        newRole = 'admin'
+      }
+      this.updateRole.user_role = newRole
+      this.$store.dispatch("updateUser", id, this.updateRole);
+
     }
+
   },
   data() {
     return {
@@ -206,13 +260,21 @@ export default {
             gender: null,
             description: null,
             image_url: null 
+        },
+        toggleData: true
+        ,
+        updateRole: {
+          user_role: null
         }
+
     }
   },
 
   created() {
     this.fetchPerfumes();
     this.fetchPerfume();
+    this.fetchUsers();
+    this.fetchUser();
   },
 };
 </script>
@@ -249,7 +311,7 @@ export default {
   flex-direction: column;
   align-items: start;
   margin-left: 0.3rem;
-  width: 10rem;
+  width: 14rem;
   color: var(--tone-five);
 }
 .gender {
@@ -280,12 +342,12 @@ export default {
 .buttons {
   display: flex;
   place-items: center;
-  gap: 1.5rem;
-  width: 6rem;
+  gap: 2rem;
+  width: 12rem;
   padding-left: 1rem;
 }
 
-.buttons button {
+.btn_del, .perf_buttons button {
   background: none;
   border: none;
 }
@@ -316,7 +378,7 @@ export default {
 }
 .images {
   margin-left: auto;
-  max-height: 80vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -324,7 +386,7 @@ export default {
 
 .perfs {
   margin-right: auto;
-  max-height: 80vh;
+  height: 80vh;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -403,4 +465,41 @@ input:active {
   border-radius: 0.3rem;
   color: var(--tone-four);
 }
+.btn_data {
+  background: none;
+  max-height: 2.2rem;
+  width: 5.5rem;
+  border: none;
+  border: 0.14rem solid var(--tone-four);
+  border-radius: 0.3rem;
+  color: var(--tone-four);
+  position: absolute;
+}
+.users_names {
+  width: 15rem
+}
+.user_desc {
+  width: 14rem;
+}
+.btn_role {
+  background: none;
+  height: 2.2rem;
+  width: 7rem;
+  border: none;
+  border: 0.14rem solid var(--tone-five);
+  border-radius: 0.3rem;
+  color: var(--tone-five);
+  
+}
+
+.btn_sort {
+  position: absolute;
+  right: 2rem;
+  top:4rem;
+  background: none;
+  border: none;
+  scale: 1.2;
+  color: var(--tone-four)
+}
+
 </style>

@@ -20,7 +20,7 @@
                 id="floatingText"
                 placeholder="name@example.com"
                 required
-                v-model="this.updatingUser.first_name"
+                v-model="this.payload.first_name"
               />
               <label for="floatingText">First name</label>
             </div>
@@ -31,7 +31,7 @@
                 id="floatingText"
                 placeholder="name@example.com"
                 required
-                v-model="this.updatingUser.last_name"
+                v-model="this.payload.last_name"
               />
               <label for="floatingText">Last name</label>
             </div>
@@ -43,7 +43,7 @@
               id="floatingInput"
               placeholder="name@example.com"
               required
-              v-model="this.updatingUser.email"
+              v-model="this.payload.email"
             />
             <label for="floatingInput">Email address</label>
           </div>
@@ -54,7 +54,7 @@
               id="floatingPassword"
               placeholder="number"
               required
-              v-model="this.updatingUser.phone_number"
+              v-model="this.payload.phone_number"
             />
             <label for="floatingText">Phone number</label>
           </div>
@@ -65,7 +65,7 @@
               id="floatingInput"
               placeholder="Male"
               required
-              v-model="updatingUser.gender"
+              v-model="this.payload.gender"
             />
             <label for="floatingPassword">Gender</label>
           </div>
@@ -76,7 +76,7 @@
               id="floatingText"
               placeholder="url"
               required
-              v-model="updatingUser.image_url"
+              v-model="this.payload.image_url"
             />
             <label for="floatingText">Image URL</label>
           </div>
@@ -139,7 +139,8 @@ export default {
   },
   data() {
     return {
-      updatingUser: {
+      payload: {
+        user_id: this.$store.state.loggedUser?.user_id,
         first_name: this.$store.state.loggedUser?.first_name,
         last_name: this.$store.state.loggedUser?.last_name,
         email: this.$store.state.loggedUser?.email,
@@ -158,7 +159,7 @@ export default {
       document.querySelector(".delete_screen").id = "hideModal";
     },
     update() {
-      this.$store.dispatch('updateUser', this.loggedUser.user_id, this.updatingUser); 
+      this.$store.dispatch('updateUser', this.payload); 
       this.hideEdit();
     },
     deleteUser() {
