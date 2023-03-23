@@ -78,12 +78,12 @@ route.delete('/perfume/:id', (req, res)=> {
 
 
 // // =====Purchase======
-// const purchase = new Purchase();
+const order = new Order();
 
 // // Fetch all purchases
-// route.get('/purchases', (req, res)=> {
-//     purchase.fetchPurchases(req, res);
-// })
+route.get('/orders', (req, res)=> {
+    order.fetchOrders(req, res);
+})
 
 // // Fetch a single purchase
 // route.get('/purchase/:id', (req, res) => {
@@ -91,18 +91,22 @@ route.delete('/perfume/:id', (req, res)=> {
 // })
 
 // // Add a new purchase
-// route.post('/purchases', bodyParser.json(), (req, res)=> {
-//     purchase.createPurchase(req, res);
-// })
+route.post('/orders', bodyParser.json(), (req, res)=> {
+    order.createOrder(req, res);
+})
 
 // // Update a purchase
-// route.put('/purchase/:id', bodyParser.json(), (req, res)=> {
-//     purchase.updatePurchase(req, res);
-// })
+route.put('/order/:id', bodyParser.json(), (req, res)=> {
+    order.updateOrder(req, res);
+})
 
 // // cancel a purchase
-// route.delete('/purchase/:id', (req, res)=> {
-//     purchase.cancelPurchase(req, res);
-// })
+route.delete('/order/:id', (req, res)=> {
+    order.cancelOrder(req, res);
+})
+
+route.delete('/orders/:id', (req, res)=> {
+    ordes.deleteOrders(req, res);
+})
 
 export default route;

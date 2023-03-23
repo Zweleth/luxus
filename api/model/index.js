@@ -242,24 +242,10 @@ export class Order {
     // fetch all Vehicles
     fetchOrders(req, res){
         const qryStr = `
-        SELECT order_id, user_id, perfume_id
-        FROM Orders;
-        `;
-
-        db.query(qryStr, (err, data) => {
-            if (err) throw err;
-            res.status(200).json({
-                results: data
-            });
-        });
-    }
-
-    // fetch Vehicle
-    fetchOrder(req, res){
-        const qryStr = `
-        SELECT order_id, user_id, perfume_id
+        SELECT perfume_name, description, price, image_url, 
         FROM Orders
-        WHERE order_id = ?;
+        INNER JOIN Perfumes on Orders.perfume_id = Perfumes.perfume_id
+        WHERE Orders.user_id = ${err, results};
         `;
 
         db.query(qryStr, [req.params.id], (err, data) => {
@@ -269,6 +255,9 @@ export class Order {
             });
         });
     }
+
+    // fetch Vehicle
+    
 
     // create a Client
     async createOrders(req, res) {
@@ -312,6 +301,19 @@ export class Order {
             if (err) throw err;
             res.status(200).json({
                 msg: 'Purchase has been canceled successfully.'
+            });
+        });  
+    }
+
+    deleteOrders(req, res) {
+        const qryStr = `
+            DELETE FROM Orders
+            WHERE user_id = ?;`
+    
+        db.query(qryStr, [req.params.id], (err) => {
+            if (err) throw err;
+            res.status(200).json({
+                msg: 'Cart has been emptied.'
             });
         });  
     }
