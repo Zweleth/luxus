@@ -1,5 +1,18 @@
 <template lang="">
   <div class="my_account" v-if="loggedUser">
+    <div class="leaving">
+      <div class="lv_modal">
+        Leaving so soon?
+        <div class="lv-buttons">
+          <button class="btn_back" @click.prevent="hideLv()">
+            Continue Shopping
+          </button>
+          <button class="btn_out" @click.prevent="logOut()">
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
     <div class="delete_screen">
       <div class="delete_modal">
         <h4>Are you sure you want to delete your account?</h4>
@@ -114,21 +127,29 @@
         </div>
         <div class="buttons">
           <button class="btn_edit" @click="showEdit()">
-            <i class="fa-solid fa-pen-to-square" ></i> Edit account
+            <i class="fa-solid fa-pen-to-square"></i> Edit account
           </button>
           <button class="btn_delete" @click="showDelete()">
-            <i class="fa-solid fa-trash" ></i> Delete
-            account
+            <i class="fa-solid fa-trash"></i> Delete account
           </button>
         </div>
       </div>
+      
     </div>
     <div class="right">
+      <button class="btn_LogOut" @click.prevent="showLv()">Logout</button>
     </div>
   </div>
+  <div class="logOut_msg" v-else>
+    <div>
+      <h4>Thanks for shopping with us</h4>
+      <i class="fa-solid fa-hand-middle-finger"></i>
+    </div>
+  </div>
+  
 </template>
 <script>
-import { hide } from '@popperjs/core';
+import { hide } from "@popperjs/core";
 
 export default {
   name: "myaccount",
@@ -146,9 +167,8 @@ export default {
         email: this.$store.state.loggedUser?.email,
         phone_number: this.$store.state.loggedUser?.phone_number,
         gender: this.$store.state.loggedUser?.gender,
-        image_url: this.$store.state.loggedUser?.image_url
-
-      }
+        image_url: this.$store.state.loggedUser?.image_url,
+      },
     };
   },
   methods: {
@@ -159,25 +179,82 @@ export default {
       document.querySelector(".delete_screen").id = "hideModal";
     },
     update() {
-      this.$store.dispatch('updateUser', this.payload); 
+      this.$store.dispatch("updateUser", this.payload);
       this.hideEdit();
     },
     deleteUser() {
-      this.$store.dispatch('deleteUser', this.loggedUser?.user_id);
+      this.$store.dispatch("deleteUser", this.loggedUser?.user_id);
       hide.hideDelete();
     },
 
     showEdit() {
       document.querySelector(".edit_screen").id = "showModal";
-      console.log(this.updatingUser)
+      console.log(this.updatingUser);
     },
     hideEdit() {
       document.querySelector(".edit_screen").id = "hideModal";
-    }
+    },
+    showLv() {
+      document.querySelector(".leaving").id = "showModal";
+    },
+    hideLv() {
+      document.querySelector(".leaving").id = "hideModal";
+    },
+    logOut() {
+      this.$store.state.loggedUser = null;
+    },
   },
 };
 </script>
 <style scoped>
+.leaving {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  display:none;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: none;
+  place-items: center;
+}
+
+.lv_modal {
+  width: 30vw;
+  height: 8rem;
+  border-radius: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--tone-two);
+  color: var(--tone-five);
+  font-size: 2rem;
+}
+.lv-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-right: 1rem;
+  width: 100%;
+  font-size: medium;
+  
+  
+}
+.logOut_msg {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--tone-three);
+  display: grid;
+  place-items: center;
+  color: var(--tone-five);
+}
+.logOut_msg h4 {
+  font-size: 6rem;
+  
+}
+.logOut_msg i {
+  font-size: 10rem;
+}
 .my_account {
   width: 100vw;
   height: 100vh;
@@ -248,7 +325,8 @@ button {
   align-items: center;
 }
 
-.delete_screen, .edit_screen {
+.delete_screen,
+.edit_screen {
   width: 100vw;
   height: 100vh;
   position: absolute;
@@ -268,7 +346,6 @@ button {
   flex-direction: column;
   gap: 1rem;
   border-radius: 1rem;
-
 }
 
 .delete_modal div {
@@ -287,7 +364,6 @@ button {
   display: none;
 }
 
-
 .edit_modal {
   margin: 0 4rem 0 4rem;
   width: 28rem;
@@ -296,17 +372,18 @@ button {
   background-color: var(--tone-one);
   border-radius: 1rem;
   color: var(--tone-four);
-  
 }
 .initials {
-  display:flex;
+  display: flex;
   gap: 0.3rem;
 }
 .form-floating {
   margin-top: 1rem;
 }
 
-.form-floating input, input:focus, input:active {
+.form-floating input,
+input:focus,
+input:active {
   background: none;
   border: none;
   border-radius: 0;
@@ -314,7 +391,7 @@ button {
   outline: none;
   box-shadow: none;
 }
-.form-buttons{
+.form-buttons {
   display: flex;
   margin-top: 1rem;
   gap: 0.6rem;
@@ -328,7 +405,7 @@ button {
   background: none;
   height: 2.2rem;
   width: 5.5rem;
-  border:none;
+  border: none;
   border: 0.14rem solid var(--tone-four);
   border-radius: 0.3rem;
   color: var(--tone-four);
