@@ -81,7 +81,7 @@ route.delete('/perfume/:id', (req, res)=> {
 const order = new Order();
 
 // // Fetch all purchases
-route.get('/orders', (req, res)=> {
+route.get('/orders/:id', (req, res)=> {
     order.fetchOrders(req, res);
 })
 
