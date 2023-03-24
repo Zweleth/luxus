@@ -143,7 +143,7 @@
   <div class="logOut_msg" v-else>
     <div>
       <h4>Thanks for shopping with us</h4>
-      <i class="fa-solid fa-hand-middle-finger"></i>
+      <i class="fa-regular fa-face-smile"></i>
     </div>
   </div>
   
