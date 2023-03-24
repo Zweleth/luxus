@@ -69,6 +69,7 @@ export default createStore({
         // console.log('statement reached 1');
         context.commit('setLoggedUser', result);    
         context.commit('setMessage', msg);
+        context.dispatch('fetchOrders')
         // console.log(result.first_name);
       }else {
         context.commit('setMessage', err);
@@ -214,7 +215,7 @@ export default createStore({
     
     async fetchOrders(context, id) {
       try { 
-        let res = await fetch(`${URL}Orders/${id}`);
+        let res = await fetch(`${URL}orders/${id}`);
         let data = await res.json();
         console.log(data);
         context.commit('setOrders', data.results.length !== 0 ? data.results : null);
@@ -228,7 +229,6 @@ export default createStore({
       let {result, msg, err} = await res.data;
       if(result){
         context.dispatch('fetchOrders');
-        context.commit('setOrders', result);
         context.commit('setMessage', msg);
       }else {
         context.commit('setMessage', err);

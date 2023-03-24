@@ -11,19 +11,19 @@
     <div class="right">
       <div class="info" v-for="order in orders" :key="order">
         <div class="name_price">
-          <h5>{{ order.perfume_name }}</h5>
-        </div>
-        <div class="gender">
-          <h5>{{ order.description }}</h5>
+          <h4>{{ order.perfume_name }}</h4>
         </div>
         <div class="description">
+          <h5>{{ order.description }}</h5>
+        </div>
+        <div class="price">
           <p>R {{ order.price }}</p>
         </div>
         <div class="qty_button">
           <button class="qtyMin">
             <i class="fa-solid fa-minus"></i>
           </button>
-          <div class="qtyVal"></div>
+          <div class="qtyVal">1</div>
           <button class="qtyPlus">
             <i class="fa-solid fa-plus"></i>
           </button>
@@ -35,6 +35,11 @@
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
+  data() {
+    return {
+      
+    };
+  },
   computed: {
     ...mapGetters([
       "perfumes",
@@ -44,6 +49,9 @@ export default {
       "loggedUser",
       "orders",
     ]),
+    loggedUserID() {
+      return this.$store.state.loggedUser?.user_id;
+    },
   },
   methods: {
     ...mapActions([
@@ -56,7 +64,8 @@ export default {
     ...mapMutations(["setPerfumes", "setUsers", "setOrders"]),
   },
   created() {
-    this.fetchOrders;
+    this.fetchOrders(this.loggedUserID);
+    console.log(this.loggedUserID);
   },
 };
 </script>
@@ -73,15 +82,24 @@ export default {
   padding-top: 5rem;
   display: flex;
   flex-direction: column;
+  gap:0.8rem;
 }
 .right {
   width: 70vw;
   height: 100vh;
   background-color: var(--tone-one);
+  padding-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap:0.8rem;
 }
 .image {
-  width: 4rem;
-  height: 4rem;
+  width: 8rem;
+  height: 8rem;
+  background-color: var(--tone-one);
+  border-radius: 0 1rem;
+  border-radius: 0.5rem 0 0 0.5rem;
+  margin-left: auto;
 }
 .img {
   width: 100%;
@@ -89,8 +107,57 @@ export default {
   background-position: center;
   background-size: cover;
 }
-.info {
- width: 20rem;
- height: 4rem;
+.info div {
+    width: fit-content;
 }
+.description {
+    width: 45vw;
+    text-align: start;
+}
+.info {
+  width: 55vw;
+  height: 8rem;
+  background-color: var(--tone-three);
+  border-radius: 0 0.5rem 0.5rem 0;
+  margin-right: auto;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+.qty_button{
+    width: fit-content;
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    display: flex;
+    background: none;
+}
+.qtyMin {
+    width: 2.5rem;
+    height: 1.8rem;
+    background: none;
+    border: none;
+    border-radius: 0.3rem 0 0 0.3rem;
+    background-color: var(--tone-one);
+}
+.qtyVal {
+    min-width: 2rem;
+    height: 1.8rem;
+    background-color: var(--tone-two);
+    display: grid;
+    place-items: center;
+}
+.qtyPlus {
+    width: 2.5rem;
+    height: 1.8rem;
+    background: none;
+    border: none;
+    border-radius: 0 0.3rem 0.3rem 0;
+    background-color: var(--tone-one);
+}
+
+
+
 </style>
