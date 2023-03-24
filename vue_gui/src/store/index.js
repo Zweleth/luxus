@@ -9,7 +9,8 @@ export default createStore({
     users: null,
     user: null,
     loggedUser: null,
-    message: null
+    message: null,
+    orders: null,
   },
   getters: {
     perfumes(state) {
@@ -27,6 +28,9 @@ export default createStore({
     loggedUser(state){
       return state.loggedUser;
     },
+    orders(state) {
+      return state.orders;
+    }
   },
   mutations: {
     setPerfumes(state, perfumes){
@@ -49,6 +53,9 @@ export default createStore({
     },
     sortPerfumes(state, perfumes) {
       state.perfumes = perfumes;
+    },
+    setOrders(state, orders) {
+      state.orders = orders;
     }
 
   },
@@ -203,6 +210,29 @@ export default createStore({
       }
       state.asc = !state.asc;
       context.dispatch('fetchPerfumes');
+    },
+    
+    async fetchOrders(context, id) {
+      try { 
+        let res = await fetch(`${URL}Orders/${id}`);
+        let data = await res.json();
+        console.log(data);
+        context.commit('setOrders', data.results.length !== 0 ? data.results : null);
+      } catch(e) {
+        console.log(e);
+      }
+    },
+
+    async createOrder(context, payload) {
+      let res = await axios.post(`${URL}orders`, payload);
+      let {result, msg, err} = await res.data;
+      if(result){
+        context.dispatch('fetchOrders');
+        context.commit('setOrders', result);
+        context.commit('setMessage', msg);
+      }else {
+        context.commit('setMessage', err);
+      }
     }
 
     
