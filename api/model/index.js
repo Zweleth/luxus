@@ -260,7 +260,7 @@ export class Order {
     
 
     // create a Client
-    async createOrders(req, res) {
+    async createOrder(req, res) {
         // payload: data from the user
         let detail = req.body;
 
