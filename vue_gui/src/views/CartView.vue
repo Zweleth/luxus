@@ -20,11 +20,11 @@
           <p>R {{ order.price }}</p>
         </div>
         <div class="qty_button">
-          <button class="qtyMin">
+          <button class="qtyMin" @click="qtyMin(order.perfume_id)">
             <i class="fa-solid fa-minus"></i>
           </button>
           <div class="qtyVal">{{order.qty}}</div>
-          <button class="qtyPlus">
+          <button class="qtyPlus" @click="qtyPlus(order.perfume_id)">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
@@ -60,8 +60,20 @@ export default {
       "fetchUsers",
       "fetchUser",
       "fetchOrders",
+      "increaseQty",
+      "decreaseQty"
     ]),
     ...mapMutations(["setPerfumes", "setUsers", "setOrders"]),
+    qtyPlus(id) {
+        this.increaseQty(id)
+        this.fetchOrders(this.loggedUserID)
+        this.fetchOrders(this.loggedUserID)
+    },
+    qtyMin(id) {
+        this.decreaseQty(id)
+        this.fetchOrders(this.loggedUserID)
+        this.fetchOrders(this.loggedUserID)
+    }
   },
   created() {
     this.fetchOrders(this.loggedUserID);

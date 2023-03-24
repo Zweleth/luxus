@@ -66,7 +66,7 @@
         <h6>R {{this.price}}</h6>
         <h6>{{this.gender}}</h6>
         <p>{{this.description}}</p>
-        <button class="addToCart"> Add to cart</button>
+        <button class="addToCart" @click.prevent="addToCart()"> Add to cart</button>
       </div>
     </div>
   </div>
@@ -78,11 +78,11 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 export default {
   name: "perfumes",
   computed: {
-    ...mapGetters(["perfumes", "perfume"]),
+    ...mapGetters(["perfumes", "perfume", "orders" , "loggedUser"]),
   },
   methods: {
-    ...mapActions(["fetchPerfumes", "fetchPerfume"]),
-    ...mapMutations(["setPerfumes"]),
+    ...mapActions(["fetchPerfumes", "fetchPerfume", "createOrder", "fetchOrders", "increaseQty", "decreaseQty", "createOrder"]),
+    ...mapMutations(["setPerfumes","setOrders"]),
     test(i) {
       // let bgColor = this.products[perfume_id-1].bgColor;
       console.log(i);
@@ -112,6 +112,17 @@ export default {
         f.id = "Slide";
       });
     },
+    addToCart() {
+      // let has = this.orders.includes(this.perfume)
+      // if (has) {
+      //   this.increaseQty(this.perfume.perfume_id)
+      // }
+      // else {
+      //   this.createOrder(this.payload)
+      // }
+      this.increaseQty(this.perfume?.perfume_id)
+      this.fetchOrders(this.loggedUser?.user_id)
+    }
   },
   created() {
     this.fetchPerfumes();
@@ -126,6 +137,11 @@ export default {
     //     image_url: 'Image_url'
     // }
     return {
+      payload: {
+        user_id: this.loggedUser?.user_id,
+        perfume_id: this.perfume?.perfume_id,
+        qty: 1
+      },
       perfume_name: null,
       image_url: null,
       price: null,

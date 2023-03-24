@@ -233,6 +233,29 @@ export default createStore({
       }else {
         context.commit('setMessage', err);
       }
+    },
+    async increaseQty(context, id){
+      let res = await axios.put(`${URL}incQty/${id}`);
+      let {msg, err} = await res.data;
+      if(msg) {
+        context.commit('setMessage', msg);
+        console.log(msg);
+      } 
+      else {
+        context.commit('setMessage', err);
+      }
+        
+    },
+    async decreaseQty(context, id){
+      let res = await axios.put(`${URL}decQty/${id}`);
+      let {msg, err} = await res.data;
+      if(msg) {
+        context.commit('setMessage', msg);
+      } 
+      else {
+        context.commit('setMessage', err);
+      }
+        
     }
 
     
