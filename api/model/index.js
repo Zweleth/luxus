@@ -242,7 +242,7 @@ export class Order {
     // fetch all Vehicles
     fetchOrders(req, res){
         const qryStr = `
-        SELECT Perfumes.perfume_name, Perfumes.description, Perfumes.price, Perfumes.image_url, Orders.qty
+        SELECT Perfumes.perfume_name, Perfumes.description, Perfumes.price, Perfumes.image_url, Orders.qty, Orders.order_id
         FROM Orders
         LEFT JOIN Perfumes
         on Orders.perfume_id = Perfumes.perfume_id
@@ -277,14 +277,26 @@ export class Order {
     }
 
     // update client details
-    updateOrder(req, res) {
-        let data = req.body;
+    incQty(req, res) {
         const qryStr = `
             UPDATE Orders
-            SET ?
+            SET qty = qty + 1 
             WHERE order_id = ?;`
 
-        db.query(qryStr, [data, req.params.id], (err) => {
+        db.query(qryStr, [req.params.id], (err) => {
+            if (err) throw err;
+            res.status(200).json({
+                msg: "Your purchase has been updated successful."
+            });
+        });
+    }
+    decQty(req, res) {
+        const qryStr = `
+            UPDATE Orders
+            SET qty = qty - 1 
+            WHERE order_id = ?;`
+
+        db.query(qryStr, [req.params.id], (err) => {
             if (err) throw err;
             res.status(200).json({
                 msg: "Your purchase has been updated successful."

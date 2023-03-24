@@ -96,8 +96,12 @@ route.post('/orders', bodyParser.json(), (req, res)=> {
 })
 
 // // Update a purchase
-route.put('/order/:id', bodyParser.json(), (req, res)=> {
-    order.updateOrder(req, res);
+route.put('/incQty/:id', (req, res)=> {
+    order.incQty(req, res);
+})
+
+route.put('/decQty/:id', (req, res)=> {
+    order.decQty(req, res);
 })
 
 // // cancel a purchase
