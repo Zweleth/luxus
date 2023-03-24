@@ -281,7 +281,7 @@ export class Order {
         const qryStr = `
             UPDATE Orders
             SET qty = qty + 1 
-            WHERE order_id = ?;`
+            WHERE perfume_id = ?;`
 
         db.query(qryStr, [req.params.id], (err) => {
             if (err) throw err;
@@ -294,7 +294,7 @@ export class Order {
         const qryStr = `
             UPDATE Orders
             SET qty = qty - 1 
-            WHERE order_id = ?;`
+            WHERE perfume_id = ?;`
 
         db.query(qryStr, [req.params.id], (err) => {
             if (err) throw err;
