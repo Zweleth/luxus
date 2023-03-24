@@ -23,7 +23,7 @@
           <button class="qtyMin">
             <i class="fa-solid fa-minus"></i>
           </button>
-          <div class="qtyVal">1</div>
+          <div class="qtyVal">{{order.qty}}</div>
           <button class="qtyPlus">
             <i class="fa-solid fa-plus"></i>
           </button>
@@ -135,7 +135,7 @@ export default {
     background: none;
 }
 .qtyMin {
-    width: 2.5rem;
+    width: 2rem;
     height: 1.8rem;
     background: none;
     border: none;
@@ -143,14 +143,14 @@ export default {
     background-color: var(--tone-one);
 }
 .qtyVal {
-    min-width: 2rem;
+    min-width: 2.5rem;
     height: 1.8rem;
     background-color: var(--tone-two);
     display: grid;
     place-items: center;
 }
 .qtyPlus {
-    width: 2.5rem;
+    width: 2rem;
     height: 1.8rem;
     background: none;
     border: none;
