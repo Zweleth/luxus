@@ -245,7 +245,7 @@ export class Order {
         SELECT perfume_name, description, price, image_url, 
         FROM Orders
         INNER JOIN Perfumes on Orders.perfume_id = Perfumes.perfume_id
-        WHERE Orders.user_id = ${err, results};
+        WHERE Orders.user_id = ?;
         `;
 
         db.query(qryStr, [req.params.id], (err, data) => {
