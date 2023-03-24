@@ -242,9 +242,9 @@ export class Order {
     // fetch all Vehicles
     fetchOrders(req, res){
         const qryStr = `
-        SELECT perfume_name, description, price, image_url 
-        FROM Orders 
-        INNER JOIN Perfumes 
+        SELECT Perfumes.perfume_name, Perfumes.description, Perfumes.price, Perfumes.image_url, Orders.qty
+        FROM Orders
+        LEFT JOIN Perfumes
         on Orders.perfume_id = Perfumes.perfume_id
         WHERE Orders.user_id = ?;
         `;
