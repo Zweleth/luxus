@@ -256,7 +256,6 @@ export default createStore({
       try {
         let res = await fetch(`${URL}order/${id}`);
         let data = await res.json();
-        console.log(data);
         context.commit(
           "setOrder",
           data.results.length !== 0 ? data.results : null
@@ -266,9 +265,10 @@ export default createStore({
         console.log(e);
       }
       if (done) {
-        console.log(this.state.order);
-        if (this.state.order.qty = 1) {
+        console.log(this.state.order[0].qty)
+        if (this.state.order[0].qty === 1) {
           context.dispatch("cancelOrder", id);
+          context.dispatch("decreaseQty", id);
         } else {
           context.dispatch("decreaseQty", id);
         }
