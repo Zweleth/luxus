@@ -49,6 +49,7 @@ export default {
       "user",
       "loggedUser",
       "orders",
+      "order",
       "total"
     ]),
     loggedUserID() {
@@ -75,15 +76,9 @@ export default {
         // this.calTotal(this.orders);
     },
     qtyMin(id) {
+      this.fetchOrder(id)
 
-      if (this.order?.qty > 0) {
-        this.decreaseQty(id)
-      }
-      else{
-        this.cancelOrder(id)
-      }
-        
-        // this.calTotal(this.orders);
+         // this.calTotal(this.orders);
     }
   },
   created() {
