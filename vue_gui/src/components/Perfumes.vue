@@ -24,6 +24,7 @@
         @mouseover="con()"
         @mouseleave="slide()"
         @click.prevent="viewMore(perfume)"
+        v-if="loggedUser"
       >
         View more
       </button>
@@ -47,6 +48,7 @@
         class="more"
         :style="{ color: `${this.products[perf.perfume_id - 1].textColor}` }"
         @click.prevent="viewMore(perfume)"
+        v-if="loggedUser"
       >
         View more
       </button>
