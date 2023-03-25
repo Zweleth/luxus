@@ -257,6 +257,23 @@ export class Order {
         });
     }
 
+    fetchOrder(req, res){
+        const qryStr = `
+        SELECT Perfumes.perfume_name, Perfumes.description, Perfumes.price, Perfumes.image_url, Orders.qty, Orders.order_id
+        FROM Orders
+        LEFT JOIN Perfumes
+        on Orders.perfume_id = Perfumes.perfume_id
+        WHERE Orders.order_id = ?;
+        `;
+
+        db.query(qryStr, [req.params.id], (err, data) => {
+            if (err) throw err;
+            res.status(200).json({
+                results: data
+            });
+        });
+    }
+
     // fetch Vehicle
     
 

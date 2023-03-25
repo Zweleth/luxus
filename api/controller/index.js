@@ -85,6 +85,10 @@ route.get('/orders/:id', (req, res)=> {
     order.fetchOrders(req, res);
 })
 
+route.get('/order/:id', (req, res)=> {
+    order.fetchOrder(req, res);
+})
+
 // // Fetch a single purchase
 // route.get('/purchase/:id', (req, res) => {
 //     purchase.fetchPurchase(req, res);
