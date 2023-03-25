@@ -66,7 +66,7 @@
         <h6>R {{this.price}}</h6>
         <h6>{{this.gender}}</h6>
         <p>{{this.description}}</p>
-        <button class="addToCart" @click.prevent="addToCart()"> Add to cart</button>
+        <button class="addToCart" @click.prevent="addToCart(this.perfume_id, this.$store.state.loggedUser?.user_id)"> Add to cart</button>
       </div>
     </div>
   </div>
@@ -88,6 +88,7 @@ export default {
       console.log(i);
     },
     viewMore(perfume) {
+      this.perfume_id = perfume.perfume_id;
       this.perfume_name = perfume.perfume_name;
       this.image_url = perfume.image_url;
       this.price = perfume.price;
@@ -112,14 +113,19 @@ export default {
         f.id = "Slide";
       });
     },
-    addToCart() {
-      console.log('works')
+    addToCart(p_id, u_id) {
+      console.log(p_id, u_id)
       // let has = this.orders.includes(this.perfume)
       // if (has) {
       //   this.increaseQty(this.perfume.perfume_id)
       // }
       // else {
-      this.createOrder(this.payload)
+        this.fetchPerfume()
+      this.createOrder({
+        user_id: u_id,
+        perfume_id: p_id,
+        qty: 1
+      })
       // }
       // this.increaseQty(this.perfume?.perfume_id)
       // this.fetchOrders(this.loggedUser?.user_id)
@@ -143,6 +149,7 @@ export default {
         perfume_id: this.perfume?.perfume_id,
         qty: 1
       },
+      perfume_id: null,
       perfume_name: null,
       image_url: null,
       price: null,

@@ -290,6 +290,7 @@ export default {
   width: 70vw;
   height: 100vh;
   background-color: var(--tone-one);
+  background-attachment: fixed;
   display: grid;
   place-items: center;
   position: relative;
@@ -300,6 +301,7 @@ export default {
   width: 30vw;
   height: 100vh;
   background-color: var(--tone-three);
+  background-attachment: fixed;
   display: grid;
   place-items: center;
   position: relative;

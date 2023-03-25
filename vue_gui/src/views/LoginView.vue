@@ -65,8 +65,8 @@ export default {
     }
   },
   methods: {
-    login() {
-        this.$store.dispatch('signIn', this.payload); 
+   async login() {
+      await  this.$store.dispatch('signIn', this.payload); 
         if (this.loggedUser) {
           this.$router.push({name: 'myaccount'})
         }

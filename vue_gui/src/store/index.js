@@ -280,6 +280,7 @@ export default createStore({
       if (result) {
         context.dispatch("fetchOrders", this.state.loggedUser.user_id);
         context.commit("setMessage", msg);
+        console.log(result);
       } else {
         context.commit("setMessage", err);
       }
