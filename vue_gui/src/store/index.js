@@ -11,6 +11,8 @@ export default createStore({
     loggedUser: null,
     message: null,
     orders: null,
+    order: null,
+    total: 0
   },
   getters: {
     perfumes(state) {
@@ -30,6 +32,12 @@ export default createStore({
     },
     orders(state) {
       return state.orders;
+    },
+    order(state) {
+      return state.order;
+    },
+    total(state) {
+      return state.total;
     }
   },
   mutations: {
@@ -56,6 +64,13 @@ export default createStore({
     },
     setOrders(state, orders) {
       state.orders = orders;
+    }
+    ,
+    setOrder(state, order) {
+      state.order = order;
+    },
+    setTotal(state, total) {
+      state.total = total;
     }
 
   },
@@ -219,6 +234,18 @@ export default createStore({
         let data = await res.json();
         console.log(data);
         context.commit('setOrders', data.results.length !== 0 ? data.results : null);
+        context.dispatch('calTotal', this.state.orders)
+      } catch(e) {
+        console.log(e);
+      }
+    },
+    
+    async fetchOrder(context, id) {
+      try { 
+        let res = await fetch(`${URL}order/${id}`);
+        let data = await res.json();
+        console.log(data);
+        context.commit('setOrder', data.results.length !== 0 ? data.results : null);
       } catch(e) {
         console.log(e);
       }
@@ -239,6 +266,7 @@ export default createStore({
       let {msg, err} = await res.data;
       if(msg) {
         context.commit('setMessage', msg);
+        context.dispatch('fetchOrders', this.state.loggedUser.user_id)
         console.log(msg);
       } 
       else {
@@ -247,9 +275,36 @@ export default createStore({
         
     },
     async decreaseQty(context, id){
+      
       let res = await axios.put(`${URL}decQty/${id}`);
       let {msg, err} = await res.data;
       if(msg) {
+        context.commit('setMessage', msg);
+        context.dispatch('fetchOrders', this.state.loggedUser.user_id)
+        
+      } 
+      else {
+        context.commit('setMessage', err);
+      }
+        
+    },
+    calTotal(context, arr) {
+      let i = 0;
+      let sum = 0;
+      while (i < arr.length) {
+        sum += parseFloat((parseFloat(arr[i].price)) *(parseFloat(arr[i].qty)))
+        i++
+      }
+      console.log(sum)
+      context.commit('setTotal', sum.toFixed(10, 2))
+      console.log("Total calculated")
+    },
+
+    async cancelOrder(context, id){
+      let res = await axios.delete(`${URL}order/${id}`);
+      let {msg, err} = await res.data;
+      if(msg) {
+        context.dispatch('fetchOrders', this.state.loggedUser.user_id)
         context.commit('setMessage', msg);
       } 
       else {

@@ -20,15 +20,16 @@
           <p>R {{ order.price }}</p>
         </div>
         <div class="qty_button">
-          <button class="qtyMin" @click="qtyMin(order.perfume_id)">
+          <button class="qtyMin" @click="qtyMin(order.order_id)">
             <i class="fa-solid fa-minus"></i>
           </button>
           <div class="qtyVal">{{order.qty}}</div>
-          <button class="qtyPlus" @click="qtyPlus(order.perfume_id)">
+          <button class="qtyPlus" @click="qtyPlus(order.order_id)">
             <i class="fa-solid fa-plus"></i>
           </button>
         </div>
       </div>
+      <h3>R {{total}}</h3>
     </div>
   </div>
 </template>
@@ -48,6 +49,7 @@ export default {
       "user",
       "loggedUser",
       "orders",
+      "total"
     ]),
     loggedUserID() {
       return this.$store.state.loggedUser?.user_id;
@@ -60,22 +62,32 @@ export default {
       "fetchUsers",
       "fetchUser",
       "fetchOrders",
+      "fetchOrder",
       "increaseQty",
-      "decreaseQty"
+      "decreaseQty",
+      "calTotal",
+      "cancelOrder"
     ]),
     ...mapMutations(["setPerfumes", "setUsers", "setOrders"]),
     qtyPlus(id) {
         this.increaseQty(id)
-        this.fetchOrders(this.loggedUserID)
-        this.fetchOrders(this.loggedUserID)
+
+        // this.calTotal(this.orders);
     },
     qtyMin(id) {
+
+      if (this.order?.qty > 0) {
         this.decreaseQty(id)
-        this.fetchOrders(this.loggedUserID)
-        this.fetchOrders(this.loggedUserID)
+      }
+      else{
+        this.cancelOrder(id)
+      }
+        
+        // this.calTotal(this.orders);
     }
   },
   created() {
+    
     this.fetchOrders(this.loggedUserID);
     console.log(this.loggedUserID);
   },
