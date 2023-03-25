@@ -25,6 +25,7 @@
           <router-link to="/myaccount" v-if="loggedUser">My account</router-link>
           <router-link to="/admin" v-if="loggedUser?.user_role === 'admin'">Admin</router-link>
           <router-link to="/about">About us</router-link>
+          <router-link to="/contact">Contact us</router-link>
           <!-- v-if="loggedUser?.user_role === 'admin'" -->
         </div>
       </div>
