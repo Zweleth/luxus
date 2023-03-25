@@ -268,7 +268,6 @@ export default createStore({
         console.log(this.state.order[0].qty)
         if (this.state.order[0].qty === 1) {
           context.dispatch("cancelOrder", id);
-          context.dispatch("decreaseQty", id);
         } else {
           context.dispatch("decreaseQty", id);
         }
@@ -279,7 +278,7 @@ export default createStore({
       let res = await axios.post(`${URL}orders`, payload);
       let { result, msg, err } = await res.data;
       if (result) {
-        context.dispatch("fetchOrders");
+        context.dispatch("fetchOrders", this.state.loggedUser.user_id);
         context.commit("setMessage", msg);
       } else {
         context.commit("setMessage", err);

@@ -113,15 +113,16 @@ export default {
       });
     },
     addToCart() {
+      console.log('works')
       // let has = this.orders.includes(this.perfume)
       // if (has) {
       //   this.increaseQty(this.perfume.perfume_id)
       // }
       // else {
-      //   this.createOrder(this.payload)
+      this.createOrder(this.payload)
       // }
-      this.increaseQty(this.perfume?.perfume_id)
-      this.fetchOrders(this.loggedUser?.user_id)
+      // this.increaseQty(this.perfume?.perfume_id)
+      // this.fetchOrders(this.loggedUser?.user_id)
     }
   },
   created() {
